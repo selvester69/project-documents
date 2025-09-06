@@ -57,8 +57,20 @@ echo "Starting PostgreSQL server on port: $PORT"
 # Start the server in the background, specifying the data directory and port.
 pg_ctl -D "$DATA_DIR" -o "-p $PORT" -l "$DATA_DIR/logfile" start
 
-# Wait for the server to be ready before trying to connect.
-sleep 3
+# Wait for the server to become available by polling with pg_isready.
+echo "Waiting for server to become available..."
+for i in {1..10}; do
+    if pg_isready -p "$PORT" -h localhost -q; then
+        echo "Server is ready."
+        break
+    fi
+    sleep 1
+done
+
+if ! pg_isready -p "$PORT" -h localhost -q; then
+    echo "Error: PostgreSQL server failed to start in time. Check logfile at $DATA_DIR/logfile" >&2
+    exit 1
+fi
 
 # --- 4. Create Superuser and Database ---
 

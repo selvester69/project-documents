@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +9,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
         body {
             font-family: 'Inter', sans-serif;
         }
     </style>
 </head>
+
 <body class="bg-gray-100 text-gray-800">
 
     <!-- Main container with a responsive layout -->
@@ -26,9 +29,10 @@
                     <!-- Navigation links will be populated here by JavaScript -->
                 </ul>
             </div>
-            
+
             <div class="mt-8">
-                <button id="add-link-btn" class="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200">
+                <button id="add-link-btn"
+                    class="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200">
                     Add New Point
                 </button>
             </div>
@@ -40,10 +44,13 @@
                 <h2 id="content-title" class="text-3xl font-bold text-gray-900 mb-4">Welcome to my documentation!</h2>
                 <div id="content-body" class="prose max-w-none text-gray-700">
                     <p>
-                        This is your personal documentation page. Use the navigation on the left to add and organize your notes, ideas, and code snippets. This page is designed to be simple, clean, and easy to use.
+                        This is your personal documentation page. Use the navigation on the left to add and organize
+                        your notes, ideas, and code snippets. This page is designed to be simple, clean, and easy to
+                        use.
                     </p>
                     <p>
-                        To add new documentation, simply click the "Add New Point" button in the navigation bar. You can edit the content of each section by modifying the JavaScript code.
+                        To add new documentation, simply click the "Add New Point" button in the navigation bar. You can
+                        edit the content of each section by modifying the JavaScript code.
                     </p>
                 </div>
             </div>
@@ -53,7 +60,8 @@
         <div id="custom-alert" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center p-4">
             <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
                 <h3 id="alert-message" class="text-xl font-semibold mb-4 text-gray-900"></h3>
-                <button id="alert-close-btn" class="py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                <button id="alert-close-btn"
+                    class="py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
                     OK
                 </button>
             </div>
@@ -101,7 +109,7 @@ function greet(name) {
                 url: "./postgresSetup.html"
             }
         ];
-        
+
         const navList = document.getElementById('nav-list');
         const addLinkBtn = document.getElementById('add-link-btn');
         const contentTitle = document.getElementById('content-title');
@@ -109,6 +117,19 @@ function greet(name) {
         const customAlert = document.getElementById('custom-alert');
         const alertMessage = document.getElementById('alert-message');
         const alertCloseBtn = document.getElementById('alert-close-btn');
+
+        // Function to set the active navigation link
+        function setActiveLink(activeLink) {
+            // Remove active styles from all links
+            navList.querySelectorAll('a').forEach(a => {
+                a.classList.remove('bg-blue-200', 'text-blue-800');
+                a.classList.add('text-gray-600');
+            });
+            // Add active styles to the specified link
+            if (activeLink) {
+                activeLink.classList.add('bg-blue-200', 'text-blue-800');
+            }
+        }
 
         // Function to display the custom alert modal
         function showAlert(message) {
@@ -139,23 +160,15 @@ function greet(name) {
                 } else {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
+                        setActiveLink(e.target);
                         loadContent(doc);
                     });
                 }
-                
+
                 link.classList.add('block', 'p-2', 'rounded-lg', 'text-gray-600', 'hover:bg-blue-100', 'transition-colors', 'duration-200', 'cursor-pointer', 'font-medium');
-                
                 li.appendChild(link);
                 navList.appendChild(li);
             });
-            // Select the first item by default
-            if (docs.length > 0) {
-                const firstLink = navList.querySelector('a');
-                if (firstLink) {
-                    firstLink.classList.add('bg-blue-200', 'text-blue-800');
-                    firstLink.classList.remove('text-gray-600');
-                }
-            }
         }
 
         // Function to load content into the main section
@@ -173,6 +186,7 @@ function greet(name) {
             };
             docs.push(newPoint);
             renderNav();
+            setActiveLink(navList.querySelector('a:last-of-type'));
             loadContent(newPoint);
             showAlert("New link 'New Documentation Point' has been added to the navigation.");
         });
@@ -181,10 +195,13 @@ function greet(name) {
         window.onload = () => {
             renderNav();
             if (docs.length > 0) {
+                // Load first doc and set its link as active
                 loadContent(docs[0]);
+                setActiveLink(navList.querySelector('a'));
             }
         };
     </script>
 
 </body>
+
 </html>
