@@ -68,218 +68,229 @@
 </head>
 
 <body>
-    <div class="min-h-screen flex flex-col md:flex-row-reverse">
-        <aside class="w-full md:w-64 bg-[#F0EBE5] p-4 space-y-2 shrink-0 md:border-l md:border-gray-200">
-            <h1 class="text-2xl font-bold text-[#8D6E63] mb-6">PostgreSQL Guide</h1>
-            <nav class="space-y-1">
-                <a href="#step-1"
-                    class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">1.
-                    Installation</a>
-                <a href="#step-2"
-                    class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">2.
-                    Initialization</a>
-                <a href="#step-3"
-                    class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">3. Start
-                    Server</a>
-                <a href="#step-4"
-                    class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">4. Connect
-                    (Admin)</a>
-                <a href="#step-5"
-                    class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">5. Create
-                    Superuser</a>
-                <a href="#step-6"
-                    class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">6. Verify
-                    User</a>
-                <a href="#step-7"
-                    class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">7. Connect (New
-                    User)</a>
-                <a href="#step-8"
-                    class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">8. Secure
-                    Password</a>
-            </nav>
-        </aside>
+    <main>
+        <div class="flex flex-col md:flex-row-reverse">
+            <aside class="w-full md:w-64 bg-[#F0EBE5] p-4 space-y-2 shrink-0 md:border-l md:border-gray-200">
+                <h1 class="text-2xl font-bold text-[#8D6E63] mb-6">PostgreSQL Guide</h1>
+                <nav class="space-y-1">
+                    <a href="#step-1"
+                        class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">1.
+                        Installation</a>
+                    <a href="#step-2"
+                        class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">2.
+                        Initialization</a>
+                    <a href="#step-3"
+                        class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">3. Start
+                        Server</a>
+                    <a href="#step-4"
+                        class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">4. Connect
+                        (Admin)</a>
+                    <a href="#step-5"
+                        class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">5. Create
+                        Superuser</a>
+                    <a href="#step-6"
+                        class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">6. Verify
+                        User</a>
+                    <a href="#step-7"
+                        class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">7. Connect
+                        (New
+                        User)</a>
+                    <a href="#step-8"
+                        class="block py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-[#EAE3D8]">8. Secure
+                        Password</a>
+                </nav>
+            </aside>
 
-        <main class="flex-1 p-4 sm:p-6 md:p-10">
-            <div class="max-w-4xl mx-auto space-y-8">
-                <div class="text-center">
-                    <h2 class="text-3xl font-bold text-[#8D6E63]">Interactive PostgreSQL Setup Guide</h2>
-                    <p class="mt-2 text-lg text-gray-600">Follow these steps to install and configure your PostgreSQL
-                        server.</p>
-                </div>
+            <div class="flex-1 p-4 sm:p-6 md:p-10">
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <div class="text-center">
+                        <h2 class="text-3xl font-bold text-[#8D6E63]">Interactive PostgreSQL Setup Guide</h2>
+                        <p class="mt-2 text-lg text-gray-600">Follow these steps to install and configure your
+                            PostgreSQL
+                            server.</p>
+                    </div>
 
-                <div id="step-1" class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        Step 1: Install PostgreSQL
-                    </h3>
-                    <div class="mt-4">
-                        <p class="mb-4">First, install the PostgreSQL database server. Select your operating system
-                            below to see the correct command.</p>
-                        <div class="flex space-x-2 mb-4">
-                            <button class="os-btn active px-4 py-2 rounded-md bg-gray-200"
-                                data-os="macos">macOS</button>
-                            <button class="os-btn px-4 py-2 rounded-md bg-gray-200" data-os="linux">Linux</button>
-                            <button class="os-btn px-4 py-2 rounded-md bg-gray-200" data-os="windows">Windows</button>
-                        </div>
-                        <div id="os-instructions">
-                            <div data-os-content="macos">
-                                <p class="mb-2 font-medium">Using Homebrew:</p>
-                                <div class="code-block">
-                                    <code>brew install postgresql</code>
-                                    <button class="copy-btn">Copy</button>
+                    <div id="step-1" class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            Step 1: Install PostgreSQL
+                        </h3>
+                        <div class="mt-4">
+                            <p class="mb-4">First, install the PostgreSQL database server. Select your operating system
+                                below to see the correct command.</p>
+                            <div class="flex space-x-2 mb-4">
+                                <button class="os-btn active px-4 py-2 rounded-md bg-gray-200"
+                                    data-os="macos">macOS</button>
+                                <button class="os-btn px-4 py-2 rounded-md bg-gray-200" data-os="linux">Linux</button>
+                                <button class="os-btn px-4 py-2 rounded-md bg-gray-200"
+                                    data-os="windows">Windows</button>
+                            </div>
+                            <div id="os-instructions">
+                                <div data-os-content="macos">
+                                    <p class="mb-2 font-medium">Using Homebrew:</p>
+                                    <div class="code-block">
+                                        <code>brew install postgresql</code>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                </div>
+                                <div data-os-content="linux" class="hidden">
+                                    <p class="mb-2 font-medium">For Ubuntu/Debian systems:</p>
+                                    <div class="code-block">
+                                        <code>sudo apt update && sudo apt install postgresql postgresql-contrib</code>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                </div>
+                                <div data-os-content="windows" class="hidden">
+                                    <p class="font-medium">Download the installer from the <a
+                                            href="https://www.postgresql.org/download/windows/" target="_blank"
+                                            class="text-blue-600 hover:underline">official PostgreSQL website</a> and
+                                        follow
+                                        the installation wizard.</p>
                                 </div>
                             </div>
-                            <div data-os-content="linux" class="hidden">
-                                <p class="mb-2 font-medium">For Ubuntu/Debian systems:</p>
-                                <div class="code-block">
-                                    <code>sudo apt update && sudo apt install postgresql postgresql-contrib</code>
-                                    <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+
+                    <div id="step-2" class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            Step 2: Initialize a New Database Cluster
+                        </h3>
+                        <div class="mt-4">
+                            <p class="mb-4">Create a new database cluster. Enter the desired path for your data
+                                directory
+                                below.</p>
+                            <label for="data-dir-input-2" class="block mb-2 font-medium">Data Directory Path:</label>
+                            <input type="text" id="data-dir-input-2" value="/usr/local/var/postgres_new" class="mb-4">
+                            <div class="code-block">
+                                <code id="initdb-command">initdb -D /usr/local/var/postgres_new</code>
+                                <button class="copy-btn">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="step-3" class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            Step 3: Start the PostgreSQL Server
+                        </h3>
+                        <div class="mt-4">
+                            <p class="mb-4">Start the server on your specified port. This command also creates a log
+                                file
+                                for diagnostics.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="data-dir-input-3" class="block mb-2 font-medium">Data Directory
+                                        Path:</label>
+                                    <input type="text" id="data-dir-input-3" value="/usr/local/var/postgres_new">
+                                </div>
+                                <div>
+                                    <label for="port-input-3" class="block mb-2 font-medium">Port:</label>
+                                    <input type="text" id="port-input-3" value="5433">
                                 </div>
                             </div>
-                            <div data-os-content="windows" class="hidden">
-                                <p class="font-medium">Download the installer from the <a
-                                        href="https://www.postgresql.org/download/windows/" target="_blank"
-                                        class="text-blue-600 hover:underline">official PostgreSQL website</a> and follow
-                                    the installation wizard.</p>
+                            <div class="code-block">
+                                <code
+                                    id="start-command">pg_ctl -D /usr/local/var/postgres_new -l logfile start -o "-p 5433"</code>
+                                <button class="copy-btn">Copy</button>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div id="step-2" class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        Step 2: Initialize a New Database Cluster
-                    </h3>
-                    <div class="mt-4">
-                        <p class="mb-4">Create a new database cluster. Enter the desired path for your data directory
-                            below.</p>
-                        <label for="data-dir-input-2" class="block mb-2 font-medium">Data Directory Path:</label>
-                        <input type="text" id="data-dir-input-2" value="/usr/local/var/postgres_new" class="mb-4">
-                        <div class="code-block">
-                            <code id="initdb-command">initdb -D /usr/local/var/postgres_new</code>
-                            <button class="copy-btn">Copy</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="step-3" class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        Step 3: Start the PostgreSQL Server
-                    </h3>
-                    <div class="mt-4">
-                        <p class="mb-4">Start the server on your specified port. This command also creates a log file
-                            for diagnostics.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label for="data-dir-input-3" class="block mb-2 font-medium">Data Directory
-                                    Path:</label>
-                                <input type="text" id="data-dir-input-3" value="/usr/local/var/postgres_new">
+                    <div id="step-4" class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            Step 4: Connect to the Default 'postgres' Database
+                        </h3>
+                        <div class="mt-4">
+                            <p class="mb-4">To perform administrative tasks, connect to the default 'postgres' database
+                                as
+                                the default 'postgres' user.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="db-name-input-4" class="block mb-2 font-medium">Database Name:</label>
+                                    <input type="text" id="db-name-input-4" value="postgres">
+                                </div>
+                                <div>
+                                    <label for="port-input-4" class="block mb-2 font-medium">Port:</label>
+                                    <input type="text" id="port-input-4" value="5433">
+                                </div>
                             </div>
-                            <div>
-                                <label for="port-input-3" class="block mb-2 font-medium">Port:</label>
-                                <input type="text" id="port-input-3" value="5433">
+                            <div class="code-block">
+                                <code
+                                    id="connect-admin-command">psql -U postgres -d postgres -p 5433 -h localhost</code>
+                                <button class="copy-btn">Copy</button>
                             </div>
                         </div>
-                        <div class="code-block">
-                            <code
-                                id="start-command">pg_ctl -D /usr/local/var/postgres_new -l logfile start -o "-p 5433"</code>
-                            <button class="copy-btn">Copy</button>
-                        </div>
                     </div>
-                </div>
 
-                <div id="step-4" class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        Step 4: Connect to the Default 'postgres' Database
-                    </h3>
-                    <div class="mt-4">
-                        <p class="mb-4">To perform administrative tasks, connect to the default 'postgres' database as
-                            the default 'postgres' user.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label for="db-name-input-4" class="block mb-2 font-medium">Database Name:</label>
-                                <input type="text" id="db-name-input-4" value="postgres">
-                            </div>
-                            <div>
-                                <label for="port-input-4" class="block mb-2 font-medium">Port:</label>
-                                <input type="text" id="port-input-4" value="5433">
+                    <div id="step-5" class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            Step 5: Create a New Superuser
+                        </h3>
+                        <div class="mt-4">
+                            <p class="mb-4">Inside the psql shell, run this SQL command to create a new 'root' user with
+                                superuser privileges and set the password to 'root'.</p>
+                            <div class="code-block">
+                                <code>CREATE USER root WITH SUPERUSER PASSWORD 'root';</code>
+                                <button class="copy-btn">Copy</button>
                             </div>
                         </div>
-                        <div class="code-block">
-                            <code id="connect-admin-command">psql -U postgres -d postgres -p 5433 -h localhost</code>
-                            <button class="copy-btn">Copy</button>
-                        </div>
                     </div>
-                </div>
 
-                <div id="step-5" class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        Step 5: Create a New Superuser
-                    </h3>
-                    <div class="mt-4">
-                        <p class="mb-4">Inside the psql shell, run this SQL command to create a new 'root' user with
-                            superuser privileges and set the password to 'root'.</p>
-                        <div class="code-block">
-                            <code>CREATE USER root WITH SUPERUSER PASSWORD 'root';</code>
-                            <button class="copy-btn">Copy</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="step-6" class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        Step 6: Verify the New User
-                    </h3>
-                    <div class="mt-4">
-                        <p class="mb-4">While still in psql, run the `\du` command to list all users and verify that
-                            'root' has been created with the 'Superuser' attribute.</p>
-                        <div class="code-block">
-                            <code>\du</code>
-                            <button class="copy-btn">Copy</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="step-7" class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        Step 7: Connect as the New 'root' User
-                    </h3>
-                    <div class="mt-4">
-                        <p class="mb-4">Exit the psql shell by typing `\q`. Then, connect again using your new 'root'
-                            user credentials.</p>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label for="db-name-input-7" class="block mb-2 font-medium">Database Name:</label>
-                                <input type="text" id="db-name-input-7" value="postgres">
-                            </div>
-                            <div>
-                                <label for="port-input-7" class="block mb-2 font-medium">Port:</label>
-                                <input type="text" id="port-input-7" value="5433">
+                    <div id="step-6" class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            Step 6: Verify the New User
+                        </h3>
+                        <div class="mt-4">
+                            <p class="mb-4">While still in psql, run the `\du` command to list all users and verify that
+                                'root' has been created with the 'Superuser' attribute.</p>
+                            <div class="code-block">
+                                <code>\du</code>
+                                <button class="copy-btn">Copy</button>
                             </div>
                         </div>
-                        <div class="code-block">
-                            <code id="connect-root-command">psql -U root -d postgres -p 5433 -h localhost</code>
-                            <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <div id="step-7" class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            Step 7: Connect as the New 'root' User
+                        </h3>
+                        <div class="mt-4">
+                            <p class="mb-4">Exit the psql shell by typing `\q`. Then, connect again using your new
+                                'root'
+                                user credentials.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="db-name-input-7" class="block mb-2 font-medium">Database Name:</label>
+                                    <input type="text" id="db-name-input-7" value="postgres">
+                                </div>
+                                <div>
+                                    <label for="port-input-7" class="block mb-2 font-medium">Port:</label>
+                                    <input type="text" id="port-input-7" value="5433">
+                                </div>
+                            </div>
+                            <div class="code-block">
+                                <code id="connect-root-command">psql -U root -d postgres -p 5433 -h localhost</code>
+                                <button class="copy-btn">Copy</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div id="step-8" class="bg-white p-6 rounded-xl shadow-md">
-                    <h3 class="text-xl font-semibold text-gray-800">
-                        Step 8: Set a More Secure Password (Recommended)
-                    </h3>
-                    <div class="mt-4">
-                        <p class="mb-4">For security, it is highly recommended to change the password to something
-                            strong and unique. Run this command inside psql.</p>
-                        <div class="code-block">
-                            <code>ALTER USER root WITH PASSWORD 'a_strong_secure_password';</code>
-                            <button class="copy-btn">Copy</button>
+                    <div id="step-8" class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800">
+                            Step 8: Set a More Secure Password (Recommended)
+                        </h3>
+                        <div class="mt-4">
+                            <p class="mb-4">For security, it is highly recommended to change the password to something
+                                strong and unique. Run this command inside psql.</p>
+                            <div class="code-block">
+                                <code>ALTER USER root WITH PASSWORD 'a_strong_secure_password';</code>
+                                <button class="copy-btn">Copy</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
