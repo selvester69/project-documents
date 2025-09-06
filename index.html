@@ -105,8 +105,9 @@ function greet(name) {
             // New entry added for the PostgreSQL file
             {
                 title: "PostgreSQL Setup",
-                content: "<p>This is an external link to my PostgreSQL setup documentation on GitHub.</p>",
-                url: "./postgresSetup.html"
+                // An empty content property tells our script to fetch the content from the URL.
+                content: "",
+                url: "postgresSetup.html"
             }
         ];
 
@@ -173,8 +174,50 @@ function greet(name) {
 
         // Function to load content into the main section
         function loadContent(doc) {
+            // Clear any dynamically added scripts from previous remote loads
+            const oldScript = document.getElementById('dynamic-script');
+            if (oldScript) {
+                oldScript.remove();
+            }
+
             contentTitle.textContent = doc.title;
-            contentBody.innerHTML = doc.content;
+
+            // Check if the doc is a remote HTML file that needs to be fetched
+            if (doc.url.endsWith('.html') && doc.content === "") {
+                contentBody.innerHTML = '<p>Loading...</p>';
+                fetch(doc.url)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const docHtml = parser.parseFromString(html, 'text/html');
+
+                        // Inject styles if they don't already exist
+                        const style = docHtml.querySelector('style');
+                        if (style && !document.getElementById('postgres-style')) {
+                            const styleTag = document.createElement('style');
+                            styleTag.id = 'postgres-style';
+                            styleTag.textContent = style.textContent;
+                            document.head.appendChild(styleTag);
+                        }
+
+                        // Inject main content and the script to make it interactive
+                        contentBody.innerHTML = docHtml.querySelector('main').innerHTML;
+                        const script = docHtml.querySelector('script');
+                        if (script) {
+                            const scriptTag = document.createElement('script');
+                            scriptTag.id = 'dynamic-script';
+                            scriptTag.textContent = script.textContent;
+                            document.body.appendChild(scriptTag);
+                        }
+                    })
+                    .catch(error => {
+                        contentBody.innerHTML = `<p class="text-red-500">Error loading content: ${error}</p>`;
+                        console.error('Error fetching content:', error);
+                    });
+            } else {
+                // For regular, inline content
+                contentBody.innerHTML = doc.content;
+            }
         }
 
         // Event listener for the "Add New Point" button
