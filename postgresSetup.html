@@ -52,12 +52,6 @@
             background-color: #7A7A7A;
         }
 
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
         input[type="text"] {
             border: 1px solid #D1C4E9;
             background-color: #FFFFFF;
@@ -74,8 +68,8 @@
 </head>
 
 <body>
-    <div class="min-h-screen flex flex-col md:flex-row">
-        <aside class="w-full md:w-64 bg-[#F0EBE5] p-4 space-y-2 shrink-0">
+    <div class="min-h-screen flex flex-col md:flex-row-reverse">
+        <aside class="w-full md:w-64 bg-[#F0EBE5] p-4 space-y-2 shrink-0 md:border-l md:border-gray-200">
             <h1 class="text-2xl font-bold text-[#8D6E63] mb-6">PostgreSQL Guide</h1>
             <nav class="space-y-1">
                 <a href="#step-1"
@@ -114,12 +108,10 @@
                 </div>
 
                 <div id="step-1" class="bg-white p-6 rounded-xl shadow-md">
-                    <button
-                        class="accordion-toggle w-full text-left text-xl font-semibold text-gray-800 flex justify-between items-center">
-                        <span>Step 1: Install PostgreSQL</span>
-                        <span class="transform transition-transform duration-300">▼</span>
-                    </button>
-                    <div class="accordion-content mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800">
+                        Step 1: Install PostgreSQL
+                    </h3>
+                    <div class="mt-4">
                         <p class="mb-4">First, install the PostgreSQL database server. Select your operating system
                             below to see the correct command.</p>
                         <div class="flex space-x-2 mb-4">
@@ -154,12 +146,10 @@
                 </div>
 
                 <div id="step-2" class="bg-white p-6 rounded-xl shadow-md">
-                    <button
-                        class="accordion-toggle w-full text-left text-xl font-semibold text-gray-800 flex justify-between items-center">
-                        <span>Step 2: Initialize a New Database Cluster</span>
-                        <span class="transform transition-transform duration-300">▼</span>
-                    </button>
-                    <div class="accordion-content mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800">
+                        Step 2: Initialize a New Database Cluster
+                    </h3>
+                    <div class="mt-4">
                         <p class="mb-4">Create a new database cluster. Enter the desired path for your data directory
                             below.</p>
                         <label for="data-dir-input-2" class="block mb-2 font-medium">Data Directory Path:</label>
@@ -172,12 +162,10 @@
                 </div>
 
                 <div id="step-3" class="bg-white p-6 rounded-xl shadow-md">
-                    <button
-                        class="accordion-toggle w-full text-left text-xl font-semibold text-gray-800 flex justify-between items-center">
-                        <span>Step 3: Start the PostgreSQL Server</span>
-                        <span class="transform transition-transform duration-300">▼</span>
-                    </button>
-                    <div class="accordion-content mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800">
+                        Step 3: Start the PostgreSQL Server
+                    </h3>
+                    <div class="mt-4">
                         <p class="mb-4">Start the server on your specified port. This command also creates a log file
                             for diagnostics.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -200,12 +188,10 @@
                 </div>
 
                 <div id="step-4" class="bg-white p-6 rounded-xl shadow-md">
-                    <button
-                        class="accordion-toggle w-full text-left text-xl font-semibold text-gray-800 flex justify-between items-center">
-                        <span>Step 4: Connect to the Default 'postgres' Database</span>
-                        <span class="transform transition-transform duration-300">▼</span>
-                    </button>
-                    <div class="accordion-content mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800">
+                        Step 4: Connect to the Default 'postgres' Database
+                    </h3>
+                    <div class="mt-4">
                         <p class="mb-4">To perform administrative tasks, connect to the default 'postgres' database as
                             the default 'postgres' user.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -226,12 +212,10 @@
                 </div>
 
                 <div id="step-5" class="bg-white p-6 rounded-xl shadow-md">
-                    <button
-                        class="accordion-toggle w-full text-left text-xl font-semibold text-gray-800 flex justify-between items-center">
-                        <span>Step 5: Create a New Superuser</span>
-                        <span class="transform transition-transform duration-300">▼</span>
-                    </button>
-                    <div class="accordion-content mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800">
+                        Step 5: Create a New Superuser
+                    </h3>
+                    <div class="mt-4">
                         <p class="mb-4">Inside the psql shell, run this SQL command to create a new 'root' user with
                             superuser privileges and set the password to 'root'.</p>
                         <div class="code-block">
@@ -242,12 +226,10 @@
                 </div>
 
                 <div id="step-6" class="bg-white p-6 rounded-xl shadow-md">
-                    <button
-                        class="accordion-toggle w-full text-left text-xl font-semibold text-gray-800 flex justify-between items-center">
-                        <span>Step 6: Verify the New User</span>
-                        <span class="transform transition-transform duration-300">▼</span>
-                    </button>
-                    <div class="accordion-content mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800">
+                        Step 6: Verify the New User
+                    </h3>
+                    <div class="mt-4">
                         <p class="mb-4">While still in psql, run the `\du` command to list all users and verify that
                             'root' has been created with the 'Superuser' attribute.</p>
                         <div class="code-block">
@@ -258,12 +240,10 @@
                 </div>
 
                 <div id="step-7" class="bg-white p-6 rounded-xl shadow-md">
-                    <button
-                        class="accordion-toggle w-full text-left text-xl font-semibold text-gray-800 flex justify-between items-center">
-                        <span>Step 7: Connect as the New 'root' User</span>
-                        <span class="transform transition-transform duration-300">▼</span>
-                    </button>
-                    <div class="accordion-content mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800">
+                        Step 7: Connect as the New 'root' User
+                    </h3>
+                    <div class="mt-4">
                         <p class="mb-4">Exit the psql shell by typing `\q`. Then, connect again using your new 'root'
                             user credentials.</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -284,12 +264,10 @@
                 </div>
 
                 <div id="step-8" class="bg-white p-6 rounded-xl shadow-md">
-                    <button
-                        class="accordion-toggle w-full text-left text-xl font-semibold text-gray-800 flex justify-between items-center">
-                        <span>Step 8: Set a More Secure Password (Recommended)</span>
-                        <span class="transform transition-transform duration-300">▼</span>
-                    </button>
-                    <div class="accordion-content mt-4">
+                    <h3 class="text-xl font-semibold text-gray-800">
+                        Step 8: Set a More Secure Password (Recommended)
+                    </h3>
+                    <div class="mt-4">
                         <p class="mb-4">For security, it is highly recommended to change the password to something
                             strong and unique. Run this command inside psql.</p>
                         <div class="code-block">
@@ -335,20 +313,28 @@
                 });
             });
 
-            const accordions = document.querySelectorAll('.accordion-toggle');
-            accordions.forEach(button => {
-                button.addEventListener('click', () => {
-                    const content = button.nextElementSibling;
-                    const icon = button.querySelector('span:last-child');
+            // Active nav highlighting on scroll
+            const sections = document.querySelectorAll('div[id^="step-"]');
+            const navLinks = document.querySelectorAll('aside nav a');
 
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                        icon.style.transform = 'rotate(0deg)';
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + 'px';
-                        icon.style.transform = 'rotate(180deg)';
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active-nav');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active-nav');
+                            }
+                        });
                     }
                 });
+            }, {
+                rootMargin: '-50% 0px -50% 0px', // Trigger when section is in the middle of the viewport
+                threshold: 0
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
             });
 
             const updateCommand = (inputs, codeElement, template) => {

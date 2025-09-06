@@ -15,20 +15,21 @@ This repository contains a small collection of personal documentation and utilit
 
 ### Documentation Hub
 
-Simply open `index.html` in your web browser to view the documentation portal.
 Because this project loads content dynamically using JavaScript's `fetch` API, you must run it from a local web server to avoid browser security errors (CORS policy).
 
-1.  Open your terminal and navigate to the project directory:
+1. Open your terminal and navigate to the project directory:
+
     ```bash
     cd /path/to/project-documents
     ```
 
-2.  Start a simple web server using Python:
+2. Start a simple web server using Python:
+
     ```bash
     python3 -m http.server 8000
     ```
 
-3.  Open your browser and navigate to `http://localhost:8000`.
+3. Open your browser and navigate to `http://localhost:8000`.
 
 ### PostgreSQL Automation Script
 
