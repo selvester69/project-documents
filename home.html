@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Documentation</title>
+    <!-- Use Tailwind CSS for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Main container with a responsive layout -->
+    <div class="flex flex-col md:flex-row h-screen">
+
+        <!-- Left Navigation Sidebar -->
+        <nav class="w-full md:w-64 bg-white shadow-lg p-4 flex flex-col justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">My Docs</h1>
+                <ul id="nav-list" class="space-y-2">
+                    <!-- Navigation links will be populated here by JavaScript -->
+                </ul>
+            </div>
+            
+            <div class="mt-8">
+                <button id="add-link-btn" class="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200">
+                    Add New Point
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main id="main-content-container" class="flex-1 p-8 overflow-y-auto">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 id="content-title" class="text-3xl font-bold text-gray-900 mb-4">Welcome to my documentation!</h2>
+                <div id="content-body" class="prose max-w-none text-gray-700">
+                    <p>
+                        This is your personal documentation page. Use the navigation on the left to add and organize your notes, ideas, and code snippets. This page is designed to be simple, clean, and easy to use.
+                    </p>
+                    <p>
+                        To add new documentation, simply click the "Add New Point" button in the navigation bar. You can edit the content of each section by modifying the JavaScript code.
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Custom Modal for Alerts -->
+        <div id="custom-alert" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center p-4">
+            <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
+                <h3 id="alert-message" class="text-xl font-semibold mb-4 text-gray-900"></h3>
+                <button id="alert-close-btn" class="py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Use a simple array to store your documentation points.
+        // In a real application, you would load this data from a file or a database.
+        let docs = [
+            {
+                title: "Getting Started",
+                content: `
+                    <p>Welcome to your personal documentation hub! This is a single-page application that can be hosted easily on platforms like GitHub Pages.</p>
+                    <p>You can edit the contents of each documentation point directly in the <code>docs</code> array in the JavaScript code.</p>
+                `,
+                url: "getting-started.html"
+            },
+            {
+                title: "Project Notes",
+                content: `
+                    <p>Here you can keep notes about your different projects. For example, you might list a to-do list for a new project or an outline for a paper.</p>
+                    <ul>
+                        <li>Project A: Review code for a new feature.</li>
+                        <li>Project B: Finalize report and submit.</li>
+                    </ul>
+                `,
+                url: "project-notes.html"
+            },
+            {
+                title: "Code Snippets",
+                content: `
+                    <p>This section is great for storing useful code snippets you often use. You can include code blocks to keep them organized.</p>
+                    <pre class="bg-gray-100 p-4 rounded-md overflow-x-auto text-sm"><code>// Example JavaScript function
+function greet(name) {
+    return 'Hello, ' + name + '!';
+}</code></pre>
+                `,
+                url: "code-snippets.html"
+            },
+            // New entry added for the PostgreSQL file
+            {
+                title: "PostgreSQL Setup",
+                content: "<p>This is an external link to my PostgreSQL setup documentation on GitHub.</p>",
+                url: "https://github.com/selvester69/project-documents/blob/main/postgresSetup.html"
+            }
+        ];
+        
+        const navList = document.getElementById('nav-list');
+        const addLinkBtn = document.getElementById('add-link-btn');
+        const contentTitle = document.getElementById('content-title');
+        const contentBody = document.getElementById('content-body');
+        const customAlert = document.getElementById('custom-alert');
+        const alertMessage = document.getElementById('alert-message');
+        const alertCloseBtn = document.getElementById('alert-close-btn');
+
+        // Function to display the custom alert modal
+        function showAlert(message) {
+            alertMessage.textContent = message;
+            customAlert.classList.remove('hidden');
+            customAlert.classList.add('flex');
+        }
+
+        // Close button for the custom alert
+        alertCloseBtn.addEventListener('click', () => {
+            customAlert.classList.remove('flex');
+            customAlert.classList.add('hidden');
+        });
+
+        // Function to render the navigation links
+        function renderNav() {
+            navList.innerHTML = ''; // Clear existing list
+            docs.forEach((doc, index) => {
+                const li = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = doc.url;
+                link.textContent = doc.title;
+
+                // Check if the link is external
+                const isExternal = doc.url.startsWith('http');
+                if (isExternal) {
+                    link.target = "_blank"; // Open in a new tab
+                } else {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadContent(doc);
+                    });
+                }
+                
+                link.classList.add('block', 'p-2', 'rounded-lg', 'text-gray-600', 'hover:bg-blue-100', 'transition-colors', 'duration-200', 'cursor-pointer', 'font-medium');
+                
+                li.appendChild(link);
+                navList.appendChild(li);
+            });
+            // Select the first item by default
+            if (docs.length > 0) {
+                const firstLink = navList.querySelector('a');
+                if (firstLink) {
+                    firstLink.classList.add('bg-blue-200', 'text-blue-800');
+                    firstLink.classList.remove('text-gray-600');
+                }
+            }
+        }
+
+        // Function to load content into the main section
+        function loadContent(doc) {
+            contentTitle.textContent = doc.title;
+            contentBody.innerHTML = doc.content;
+        }
+
+        // Event listener for the "Add New Point" button
+        addLinkBtn.addEventListener('click', () => {
+            const newPoint = {
+                title: "New Documentation Point",
+                content: "<p>This is a new documentation point. You can edit this text directly in the JavaScript array.</p>",
+                url: `new-point-${docs.length + 1}.html`
+            };
+            docs.push(newPoint);
+            renderNav();
+            loadContent(newPoint);
+            showAlert("New link 'New Documentation Point' has been added to the navigation.");
+        });
+
+        // Initial setup
+        window.onload = () => {
+            renderNav();
+            if (docs.length > 0) {
+                loadContent(docs[0]);
+            }
+        };
+    </script>
+
+</body>
+</html>
