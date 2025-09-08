@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Guide: Custom macOS Commands</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Slate background, white cards, teal accents) -->
+    <!-- Application Structure Plan: The application is structured as a linear, step-by-step interactive tutorial. This design directly mirrors the procedural nature of the source README file, which is the most intuitive way to present a technical guide. The core enhancement is transforming passive code blocks into interactive elements with "copy to clipboard" functionality, reducing user error and effort. Each step is encapsulated in a distinct card to visually segment the process, making it easy to follow. This structure was chosen to turn a static document into an active learning tool, guiding the user through each required action. -->
+    <!-- Visualization & Content Choices: The content from the README is presented using a combination of explanatory text and interactive code blocks. Report Info: Shell script content and terminal commands. -> Goal: Enable easy and accurate use by the user. -> Viz/Presentation Method: Styled <pre><code> blocks. -> Interaction: A "Copy" button for each block that copies the content to the clipboard and provides visual feedback. -> Justification: This is the most direct and useful interaction for a technical tutorial. Report Info: The abstract concept of moving a script to the system PATH. -> Goal: Clarify the concept visually. -> Viz/Presentation Method: A simple diagram created with HTML, Tailwind CSS, and Unicode characters. -> Interaction: Static visual aid. -> Justification: Provides a clear, non-textual explanation of a key concept without relying on forbidden SVG/image files. No data charts are necessary as the source material is procedural, not data-driven. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .step-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: #4A5568;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .copy-button:hover {
+            background-color: #2D3748;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-teal-700">Create Custom macOS Commands</h1>
+            <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">An interactive guide to turning any shell script into a powerful, global command you can run from anywhere.</p>
+        </header>
+
+        <main class="max-w-4xl mx-auto flex flex-col gap-10">
+
+            <!-- Step 1: Create Your Script -->
+            <section class="step-card bg-white rounded-xl shadow-md p-6 md:p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-teal-100 text-teal-700 font-bold rounded-full w-10 h-10 flex items-center justify-center text-xl">1</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Create Your Script</h2>
+                </div>
+                <p class="mb-6 text-slate-600">
+                    A shell script is a text file containing a series of commands. This example creates a powerful `jenkins` command to manage a Jenkins server running in Docker. The first line, `#!/bin/bash`, is called a "shebang" and tells your Mac to use the Bash shell to run the script.
+                </p>
+                <div class="mb-4">
+                    <label for="localpath" class="block text-sm font-medium text-slate-700 mb-2">Note: Replace the placeholder with a real local path to store Jenkins data (e.g., `~/jenkins_data`):</label>
+                    <input type="text" id="localpath" value="~/jenkins_data" class="w-full p-2 border border-slate-300 rounded-md bg-slate-50 focus:ring-2 focus:ring-teal-500 focus:border-teal-500" onkeyup="updateScriptPath(this.value)">
+                </div>
+                <div class="code-block bg-slate-800 rounded-lg p-4 text-white font-mono text-sm">
+                    <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+                    <pre><code id="script-content">#!/bin/bash
+
+# Container details
+CONTAINER_NAME="jenkins-server"
+IMAGE_NAME="jenkins/jenkins:lts-jdk17"
+
+# Function to check container status
+check_status() {
+  if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+    echo "Jenkins container is running."
+    return 0
+  elif [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
+    echo "Jenkins container exists but is stopped."
+    return 1
+  else
+    echo "Jenkins container does not exist."
+    return 2
+  fi
+}
+
+# Main logic
+case "$1" in
+  start)
+    check_status
+    status=$?
+    if [ $status -eq 0 ]; then
+      echo "Jenkins container is already running."
+    elif [ $status -eq 1 ]; then
+      echo "Starting existing Jenkins container..."
+      docker start $CONTAINER_NAME
+    else
+      echo "Creating and starting new Jenkins container..."
+      docker run \
+        -d \
+        -p 9090:8080 \
+        -p 50000:50000 \
+        -v ~/jenkins_data:/var/jenkins_home \
+        --name $CONTAINER_NAME \
+        $IMAGE_NAME
+    fi
+    echo "Jenkins is running at http://localhost:9090"
+    ;;
+
+  stop)
+    if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+      echo "Stopping Jenkins container..."
+      docker stop $CONTAINER_NAME
+      echo "Jenkins container stopped."
+    else
+      echo "Jenkins container is not running."
+    fi
+    ;;
+
+  status)
+    check_status
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop|status}"
+    exit 1
+    ;;
+esac</code></pre>
+                </div>
+            </section>
+
+            <!-- Step 2: Make it Executable -->
+            <section class="step-card bg-white rounded-xl shadow-md p-6 md:p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-teal-100 text-teal-700 font-bold rounded-full w-10 h-10 flex items-center justify-center text-xl">2</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Make the Script Executable</h2>
+                </div>
+                <p class="mb-6 text-slate-600">
+                    For security, new files aren't runnable by default. You need to grant "execute" permissions. The `chmod +x` command modifies the file's permissions, telling the system it's safe to run as a program.
+                </p>
+                <div class="code-block bg-slate-800 rounded-lg p-4 text-white font-mono text-sm">
+                    <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+                    <pre><code>chmod +x jenkins</code></pre>
+                </div>
+            </section>
+
+            <!-- Step 3: Add to PATH -->
+            <section class="step-card bg-white rounded-xl shadow-md p-6 md:p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-teal-100 text-teal-700 font-bold rounded-full w-10 h-10 flex items-center justify-center text-xl">3</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Add it to Your PATH</h2>
+                </div>
+                <p class="mb-6 text-slate-600">
+                    To run your script from any directory just by typing its name, move it to a location in your system's `PATH`. The `PATH` is a list of directories your shell searches for commands. `/usr/local/bin` is the standard place for user-installed executables.
+                </p>
+                <div class="my-6 p-4 bg-slate-100 rounded-lg flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">📜</span>
+                        <span class="font-mono bg-white px-2 py-1 rounded">jenkins</span>
+                    </div>
+                    <div class="text-3xl text-teal-500 font-sans mx-4">→</div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🧰</span>
+                        <span class="font-mono bg-white px-2 py-1 rounded">/usr/local/bin/</span>
+                    </div>
+                </div>
+                <div class="code-block bg-slate-800 rounded-lg p-4 text-white font-mono text-sm">
+                    <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+                    <pre><code>sudo mv jenkins /usr/local/bin/</code></pre>
+                </div>
+            </section>
+
+            <!-- Step 4: Run Your New Command -->
+            <section class="step-card bg-white rounded-xl shadow-md p-6 md:p-8">
+                 <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-teal-100 text-teal-700 font-bold rounded-full w-10 h-10 flex items-center justify-center text-xl">4</div>
+                    <h2 class="text-2xl font-bold text-slate-900">Run Your New Command</h2>
+                </div>
+                <p class="mb-6 text-slate-600">
+                   That's it! Your new `jenkins` command is ready. Open a **new** terminal tab or window to ensure it's loaded, and try it out. You can now manage your Jenkins container from anywhere.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="code-block bg-slate-800 rounded-lg p-4 text-white font-mono text-sm">
+                        <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+                        <p class="text-slate-400 mb-2">// Start Jenkins</p>
+                        <pre><code>jenkins start</code></pre>
+                    </div>
+                    <div class="code-block bg-slate-800 rounded-lg p-4 text-white font-mono text-sm">
+                        <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+                        <p class="text-slate-400 mb-2">// Stop Jenkins</p>
+                        <pre><code>jenkins stop</code></pre>
+                    </div>
+                    <div class="code-block bg-slate-800 rounded-lg p-4 text-white font-mono text-sm">
+                        <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+                        <p class="text-slate-400 mb-2">// Check Status</p>
+                        <pre><code>jenkins status</code></pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const scriptTemplate = `#!/bin/bash
+
+# Container details
+CONTAINER_NAME="jenkins-server"
+IMAGE_NAME="jenkins/jenkins:lts-jdk17"
+
+# Function to check container status
+check_status() {
+  if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+    echo "Jenkins container is running."
+    return 0
+  elif [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
+    echo "Jenkins container exists but is stopped."
+    return 1
+  else
+    echo "Jenkins container does not exist."
+    return 2
+  fi
+}
+
+# Main logic
+case "$1" in
+  start)
+    check_status
+    status=$?
+    if [ $status -eq 0 ]; then
+      echo "Jenkins container is already running."
+    elif [ $status -eq 1 ]; then
+      echo "Starting existing Jenkins container..."
+      docker start $CONTAINER_NAME
+    else
+      echo "Creating and starting new Jenkins container..."
+      docker run \\
+        -d \\
+        -p 9090:8080 \\
+        -p 50000:50000 \\
+        -v <localpath_placeHolder>:/var/jenkins_home \\
+        --name $CONTAINER_NAME \\
+        $IMAGE_NAME
+    fi
+    echo "Jenkins is running at http://localhost:9090"
+    ;;
+
+  stop)
+    if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+      echo "Stopping Jenkins container..."
+      docker stop $CONTAINER_NAME
+      echo "Jenkins container stopped."
+    else
+      echo "Jenkins container is not running."
+    fi
+    ;;
+
+  status)
+    check_status
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop|status}"
+    exit 1
+    ;;
+esac`;
+        
+        function updateScriptPath(path) {
+            const scriptContentEl = document.getElementById('script-content');
+            const newScript = scriptTemplate.replace('<localpath_placeHolder>', path);
+            scriptContentEl.textContent = newScript;
+        }
+
+        function copyToClipboard(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').innerText;
+            
+            const textArea = document.createElement('textarea');
+            textArea.value = code;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = '📋 Copy';
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                button.textContent = '❌ Failed';
+                 setTimeout(() => {
+                    button.textContent = '📋 Copy';
+                }, 2000);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // Initialize script content on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialPath = document.getElementById('localpath').value;
+            updateScriptPath(initialPath);
+        });
+    </script>
+</body>
+</html>
