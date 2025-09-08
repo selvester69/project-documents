@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Jenkins Docker Setup Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Slate, Cyan) -->
+    <!-- Application Structure Plan: A single-scroll SPA with a sticky navigation bar for quick access to thematic sections: Overview, Setup, Management, Troubleshooting, and Code Files. This task-oriented structure breaks down the technical guide into logical, manageable steps. Interactivity is focused on accordion-style troubleshooting and tabbed code viewers, with copy-to-clipboard functionality for all code snippets to improve usability for the developer audience. -->
+    <!-- Visualization & Content Choices: Report Info: Setup commands -> Goal: Guide User -> Presentation: Styled code blocks -> Interaction: "Copy to Clipboard" button -> Justification: Reduces errors and friction for technical users. Report Info: Troubleshooting steps -> Goal: Organize -> Presentation: Accordion UI -> Interaction: Click to expand/collapse -> Justification: Prevents information overload, keeps UI clean. Report Info: Source code files -> Goal: Reference -> Presentation: Tabbed code viewer -> Interaction: Click tabs to switch files, copy button -> Justification: Organizes related but distinct content efficiently. All implemented with Vanilla JS and Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .nav-link.active {
+            color: #0891b2; /* cyan-600 */
+            font-weight: 600;
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #475569; /* slate-600 */
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .copy-btn:hover {
+            background-color: #e2e8f0; /* slate-200 */
+        }
+        .copy-btn.copied {
+            background-color: #10b981; /* green-500 */
+            color: white;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-item.open .accordion-content {
+            max-height: 500px; /* Adjust as needed */
+            transition: max-height 0.5s ease-in;
+        }
+        .accordion-item.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+        .tab-btn.active {
+            border-color: #0891b2; /* cyan-600 */
+            color: #0891b2; /* cyan-600 */
+            background-color: #f0f9ff;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-slate-900">Jenkins Docker Setup</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#overview" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-cyan-600 transition-colors">Overview</a>
+                        <a href="#setup" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-cyan-600 transition-colors">Setup</a>
+                        <a href="#manage" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-cyan-600 transition-colors">Manage</a>
+                        <a href="#troubleshooting" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-cyan-600 transition-colors">Troubleshooting</a>
+                        <a href="#code" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-cyan-600 transition-colors">Code Files</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <section id="overview" class="mb-16">
+            <h1 class="text-4xl font-bold text-slate-900 mb-2">🏗️ Jenkins Persistent Setup with Docker</h1>
+            <p class="text-lg text-slate-600 mb-8">This interactive guide provides a simple, persistent, and containerized Jenkins setup using Docker. It ensures all your data (jobs, plugins, and configurations) is safely stored on your local machine, so you never lose progress.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-slate-900">Key Features</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center"><span class="text-cyan-500 mr-3">✔️</span> Uses Jenkins LTS with JDK 17</li>
+                        <li class="flex items-center"><span class="text-cyan-500 mr-3">✔️</span> Persistent data storage mapped to host</li>
+                        <li class="flex items-center"><span class="text-cyan-500 mr-3">✔️</span> Easy management via start/stop/status script</li>
+                        <li class="flex items-center"><span class="text-cyan-500 mr-3">✔️</span> UI accessible at http://localhost:9090</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4 text-slate-900">System Requirements</h3>
+                    <ul class="space-y-3">
+                        <li><strong>CPU:</strong> 2+ cores recommended</li>
+                        <li><strong>RAM:</strong> 4GB minimum (8GB+ recommended)</li>
+                        <li><strong>Disk:</strong> At least 10GB free space</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="setup" class="mb-16">
+            <h2 class="text-3xl font-bold border-b pb-2 mb-8 text-slate-900">🚀 Getting Started</h2>
+            <div class="space-y-8">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-cyan-500 text-white rounded-full font-bold text-xl">1</div>
+                    <div class="ml-6">
+                        <h3 class="text-xl font-semibold text-slate-900">Prerequisites</h3>
+                        <p class="text-slate-600 mt-1">Ensure you have Docker installed and running on your machine. You'll also need basic knowledge of shell commands.</p>
+                        <a href="https://docs.docker.com/get-docker/" target="_blank" class="text-cyan-600 hover:underline mt-2 inline-block">Get Docker →</a>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-cyan-500 text-white rounded-full font-bold text-xl">2</div>
+                    <div class="ml-6">
+                        <h3 class="text-xl font-semibold text-slate-900">Clone the Repository</h3>
+                        <p class="text-slate-600 mt-1">Get the project files by cloning the repository and moving into the directory.</p>
+                        <div class="code-block mt-2">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code class="language-bash">git clone https://github.com/your-username/jenkins-docker-setup.git
+cd jenkins-docker-setup</code></pre>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-cyan-500 text-white rounded-full font-bold text-xl">3</div>
+                    <div class="ml-6">
+                        <h3 class="text-xl font-semibold text-slate-900">Make Script Executable</h3>
+                        <p class="text-slate-600 mt-1">You only need to do this once to grant permission to run the script.</p>
+                        <div class="code-block mt-2">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg overflow-x-auto"><code class="language-bash">chmod +x start_jenkins.sh</code></pre>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="manage" class="mb-16">
+            <h2 class="text-3xl font-bold border-b pb-2 mb-8 text-slate-900">⚙️ Manage Your Jenkins Server</h2>
+            <p class="text-slate-600 mb-8">Use the provided script to easily manage the lifecycle of your Jenkins container. The commands below show you how to start, stop, and check the status of your server.</p>
+            <div class="grid md:grid-cols-3 gap-6">
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg text-slate-900">Start Jenkins</h3>
+                    <p class="text-slate-500 text-sm mt-1 mb-4">Creates and starts the container.</p>
+                    <div class="code-block">
+                        <pre class="bg-slate-800 text-white p-3 rounded-md text-sm"><code class="language-bash">bash start_jenkins.sh start</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg text-slate-900">Stop Jenkins</h3>
+                    <p class="text-slate-500 text-sm mt-1 mb-4">Stops the running container.</p>
+                     <div class="code-block">
+                        <pre class="bg-slate-800 text-white p-3 rounded-md text-sm"><code class="language-bash">bash start_jenkins.sh stop</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="font-semibold text-lg text-slate-900">Check Status</h3>
+                    <p class="text-slate-500 text-sm mt-1 mb-4">Checks if the container is running.</p>
+                     <div class="code-block">
+                        <pre class="bg-slate-800 text-white p-3 rounded-md text-sm"><code class="language-bash">bash start_jenkins.sh status</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+             <div class="mt-8 bg-cyan-50 border border-cyan-200 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold text-cyan-900">Access Jenkins & Initial Password</h3>
+                <p class="text-cyan-800 mt-2">Once started, access the Jenkins UI at <a href="http://localhost:9090" target="_blank" class="font-semibold underline">http://localhost:9090</a>. On your first visit, you'll need an initial admin password. Retrieve it with this command:</p>
+                <div class="code-block mt-4">
+                    <pre class="bg-slate-800 text-white p-3 rounded-md text-sm"><code class="language-bash">docker logs jenkins-server</code></pre>
+                    <button class="copy-btn">Copy</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="troubleshooting" class="mb-16">
+            <h2 class="text-3xl font-bold border-b pb-2 mb-8 text-slate-900">🛠️ Troubleshooting Common Issues</h2>
+             <div class="space-y-4" id="accordion-container">
+                <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-slate-900">
+                        <span>1. Port Conflicts</span>
+                        <span class="accordion-icon transition-transform transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-5 pt-0 text-slate-600 space-y-2">
+                            <p><strong>Problem:</strong> You see an error like `port is already allocated`.</p>
+                            <p><strong>Cause:</strong> Another application is using port 9090 or 50000.</p>
+                            <p><strong>Solution:</strong> Edit `start_jenkins.sh`, find the `-p 9090:8080` line, and change the first number to an unused port (e.g., `-p 9091:8080`). Then access Jenkins at `http://localhost:9091`.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-slate-900">
+                        <span>2. Docker Permission Issues (Linux)</span>
+                         <span class="accordion-icon transition-transform transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                         <div class="p-5 pt-0 text-slate-600 space-y-2">
+                            <p><strong>Problem:</strong> You get a `permission denied` error when trying to connect to the Docker daemon socket.</p>
+                            <p><strong>Cause:</strong> Your user account isn't in the `docker` group.</p>
+                            <p><strong>Solution:</strong> Run `sudo usermod -aG docker $USER` and then **log out and log back in** for the change to take effect.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-slate-900">
+                        <span>3. Volume Permission Issues (Linux)</span>
+                         <span class="accordion-icon transition-transform transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                         <div class="p-5 pt-0 text-slate-600 space-y-2">
+                            <p><strong>Problem:</strong> Jenkins logs show `Permission denied` when writing to `/var/jenkins_home`.</p>
+                            <p><strong>Cause:</strong> The user inside the container (UID 1000) can't write to your mounted local directory.</p>
+                            <p><strong>Solution:</strong> Change the ownership of your local Jenkins directory by running `sudo chown -R 1000:1000 <path_to_your_jenkins_folder>`.</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="accordion-item bg-white rounded-lg shadow-md">
+                    <button class="accordion-header w-full flex justify-between items-center p-5 text-left font-semibold text-slate-900">
+                        <span>4. How to Reset Jenkins (Start Fresh)</span>
+                         <span class="accordion-icon transition-transform transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content">
+                         <div class="p-5 pt-0 text-slate-600 space-y-2">
+                            <p><strong>Problem:</strong> You want to completely reset your Jenkins instance.</p>
+                            <p><strong>Solution:</strong> Stop the container with `bash start_jenkins.sh stop`. Then, **permanently delete** the contents of your local Jenkins data directory (`sudo rm -rf <path_to_your_jenkins_folder>/*`). Start the container again to begin with a fresh setup.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="code">
+            <h2 class="text-3xl font-bold border-b pb-2 mb-8 text-slate-900">📄 Code Files</h2>
+            <div class="bg-white rounded-lg shadow-md">
+                <div class="border-b border-slate-200">
+                    <nav class="-mb-px flex space-x-4 p-4" aria-label="Tabs">
+                        <button class="tab-btn active whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm" data-tab="script">
+                            start_jenkins.sh
+                        </button>
+                        <button class="tab-btn whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300" data-tab="dockerfile">
+                            Dockerfile
+                        </button>
+                    </nav>
+                </div>
+                <div class="p-4">
+                    <div id="script-content" class="tab-content">
+                        <div class="code-block">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg text-sm overflow-x-auto"><code class="language-bash">#!/bin/bash
+
+# Container details
+CONTAINER_NAME="jenkins-server"
+IMAGE_NAME="jenkins/jenkins:lts-jdk17"
+# IMPORTANT: Define the absolute path on your host machine for persistent data
+JENKINS_HOME="/Users/your_user/jenkins_home" # <-- EDIT THIS PATH
+
+# Create the directory if it doesn't exist
+mkdir -p $JENKINS_HOME
+
+# Function to check container status
+check_status() {
+  # ... (rest of script)
+}
+
+# Main logic
+case "$1" in
+  start)
+    check_status
+    status=$?
+    if [ $status -eq 0 ]; then
+      echo "Jenkins container is already running."
+    elif [ $status -eq 1 ]; then
+      echo "Starting existing Jenkins container..."
+      docker start $CONTAINER_NAME
+    else
+      echo "Creating and starting new Jenkins container..."
+      docker run \
+        -d \
+        -p 9090:8080 \
+        -p 50000:50000 \
+        -v $JENKINS_HOME:/var/jenkins_home \
+        --name $CONTAINER_NAME \
+        $IMAGE_NAME
+    fi
+    echo "Jenkins is running at http://localhost:9090"
+    ;;
+  # ... (rest of script)
+esac
+</code></pre>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+                    <div id="dockerfile-content" class="tab-content hidden">
+                        <div class="code-block">
+                            <pre class="bg-slate-800 text-white p-4 rounded-lg text-sm overflow-x-auto"><code class="language-dockerfile"># Custom Jenkins image based on official LTS with JDK 17
+FROM jenkins/jenkins:lts-jdk17
+
+# Declare Jenkins home as a volume for persistence.
+# This ensures that if a user runs the container without explicitly
+# mapping a volume, Docker will still manage a persistent volume.
+VOLUME /var/jenkins_home
+</code></pre>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="text-center py-8 text-slate-500 text-sm">
+        <p>Interactive Jenkins Docker Guide</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Copy to clipboard
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const codeElement = button.previousElementSibling.querySelector('code');
+                    const codeToCopy = codeElement.innerText;
+                    
+                    const tempTextArea = document.createElement('textarea');
+                    tempTextArea.value = codeToCopy;
+                    document.body.appendChild(tempTextArea);
+                    tempTextArea.select();
+                    try {
+                        document.execCommand('copy');
+                        button.textContent = 'Copied!';
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                            button.textContent = 'Copy';
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                    document.body.removeChild(tempTextArea);
+                });
+            });
+
+            // Accordion functionality
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const accordionItem = header.parentElement;
+                    accordionItem.classList.toggle('open');
+                });
+            });
+
+            // Tabs functionality
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === `${tabId}-content`) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            // Active nav link on scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
